@@ -1,0 +1,5 @@
+- name: Ensure Grafana Alloy configuration directory exists
+  ansible.builtin.file:
+    path: "{{ alloy_dir }}"
+    state: directory
+    mode: "0755"

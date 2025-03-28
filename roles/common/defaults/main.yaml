@@ -1,0 +1,13 @@
+alloy_dir: /opt/alloy
+alloy_systemd_name: alloy.service
+
+alloy_user: 'alloy'
+alloy_group: 'alloy'
+
+config_permissions: '0740'
+
+enable_loki: true
+enable_prometheus: true
+
+alloy_server_http_listen_address: 127.0.0.1
+alloy_server_http_listen_port: 12345

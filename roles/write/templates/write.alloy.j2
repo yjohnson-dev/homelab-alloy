@@ -1,0 +1,67 @@
+{% if enable_prometheus %}
+prometheus.remote_write "{{ prometheus_remote_write_label }}" {
+    {% if prometheus_external_labels is defined and prometheus_external_labels %}
+    external_labels = {
+    {% for key, value in prometheus_external_labels.items() %}
+    {{ key }} = "{{ value }}",
+    {% endfor %}
+}
+{% endif -%}
+    {% for endpoint in prometheus_endpoints -%}
+    endpoint {
+    {% for key, value in endpoint.items() if ((value is not none) ) %}
+    {{ key }} = "{{ value }}"
+    {% endfor %}
+}{% endfor +%}
+}
+{% endif %}
+{% if enable_loki %}
+loki.write "{{ loki_write_label }}" {
+{% if loki_external_labels is defined and loki_external_labels %}
+    external_labels = {
+    {% for key, value in loki_external_labels.items() %}
+    {{ key }} = "{{ value }}",
+    {% endfor %}
+}{% endif %}
+{% for endpoint in loki_endpoints %}
+    endpoint {
+        url = "{{ endpoint.url }}"
+        {%- if endpoint.batch_size is defined +%}
+        batch_size = "{{ endpoint.batch_size }}"{% endif +%}
+        {%- if endpoint.batch_wait is defined +%}
+        batch_wait = "{{ endpoint.batch_wait }}"{% endif +%}
+        {%- if endpoint.bearer_token_file is defined +%}
+        bearer_token_file = "{{ endpoint.bearer_token_file }}"{% endif +%}
+        {%- if endpoint.bearer_token is defined +%}
+        bearer_token = "{{ endpoint.bearer_token }}"{% endif +%}
+        {%- if endpoint.enable_http2 is defined +%}
+        enable_http2 = {{ endpoint.enable_http2 | lower }}{% endif +%}
+        {%- if endpoint.follow_redirects is defined +%}
+        follow_redirects = "{{ endpoint.follow_redirects }}"{% endif +%}
+        {%- if endpoint.headers is defined +%}
+        headers = "{{ endpoint.headers }}"{% endif +%}
+        {%- if endpoint.max_backoff_period is defined +%}
+        max_backoff_period = "{{ endpoint.max_backoff_period }}"{% endif +%}
+        {%- if endpoint.max_backoff_retries is defined +%}
+        max_backoff_retries = "{{ endpoint.max_backoff_retries }}"{% endif +%}
+        {%- if endpoint.min_backoff_period is defined +%}
+        min_backoff_period = "{{ endpoint.min_backoff_period }}"{% endif +%}
+        {%- if endpoint.name is defined +%}
+        name = "{{ endpoint.name }}"{% endif +%}
+        {%- if endpoint.no_proxy is defined +%}
+        no_proxy = "{{ endpoint.no_proxy }}"{% endif +%}
+        {%- if endpoint.proxy_connect_header is defined +%}
+        proxy_connect_header = "{{ endpoint.proxy_connect_header }}"{% endif +%}
+        {%- if endpoint.proxy_from_environment is defined +%}
+        proxy_from_environment = "{{ endpoint.proxy_from_environment }}"{% endif +%}
+        {%- if endpoint.proxy_url is defined +%}
+        proxy_url = "{{ endpoint.proxy_url }}"{% endif +%}
+        {%- if endpoint.remote_timeout is defined +%}
+        remote_timeout = "{{ endpoint.remote_timeout }}"{% endif +%}
+        {%- if endpoint.retry_on_http_429 is defined +%}
+        retry_on_http_429 = "{{ endpoint.retry_on_http_429 }}"{% endif +%}
+        {%- if endpoint.tenant_id is defined +%}
+        tenant_id = "{{ endpoint.tenant_id }}"{% endif +%}
+    }{% endfor +%}
+}{% endif %}
+

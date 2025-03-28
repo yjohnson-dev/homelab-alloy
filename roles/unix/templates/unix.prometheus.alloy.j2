@@ -1,0 +1,8 @@
+prometheus.exporter.unix "{{ prometheus_exporter_unix_label }}" {
+
+}
+
+prometheus.scrape "{{ prometheus_scrape_unix_label }}" {
+    targets = prometheus.exporter.unix.{{ prometheus_exporter_unix_label }}.targets
+    forward_to = [prometheus.remote_write.{{ prometheus_remote_write_label }}.receiver]
+}

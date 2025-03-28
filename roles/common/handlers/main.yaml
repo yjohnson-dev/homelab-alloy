@@ -1,0 +1,22 @@
+- name: Restart Grafana Alloy
+  listen: Verify Grafana Alloy
+  ansible.builtin.systemd_service:
+    name: "{{ alloy_systemd_name }}"
+    state: restarted
+    enabled: true
+    daemon_reload: true
+  when: not ansible_check_mode
+
+# From the Alloy Ansible collection
+# https://github.com/grafana/grafana-ansible-collection/blob/main/roles/alloy/tasks/deploy.yml
+- name: Verify that Alloy URL is responding
+  listen: Verify Grafana Alloy
+  ansible.builtin.uri:
+    url: "http://{{ alloy_server_http_listen_address }}:{{ alloy_server_http_listen_port }}/-/ready"
+    method: GET
+  register: __alloy_verify_url_status_code
+  retries: 5
+  delay: 8
+  until: __alloy_verify_url_status_code.status == 200
+  when:
+    - not ansible_check_mode

@@ -1,0 +1,3 @@
+prometheus_remote_write_label: default
+
+loki_write_label: default
