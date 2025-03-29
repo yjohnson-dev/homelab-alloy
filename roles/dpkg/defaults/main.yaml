@@ -1,0 +1,5 @@
+dpkg_log_path: "/var/log/dpkg.log"
+loki_source_file_dpkg_label: dpkg_source
+loki_source_file_dpkg_max_freq: 15m
+loki_source_file_dpkg_job_name: "files/dpkg"
+loki_process_dpkg_label: dpkg_process

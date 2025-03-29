@@ -46,6 +46,8 @@ You can optionally set the `prometheus_external_labels` or `loki_external_labels
 
 ## All Variables
 
+You can set the `config_name` variable to change the name of the config file itself. It will be added as "`{{ config_name }}.alloy`" if provided, otherwise it will be added as "`{{ role_name }}.alloy`. This **has** to be added as a variable for the role and not the play, otherwise every subsequent role will overwrite it.
+
 The following variables can configure what the role does. Of note, the Grafana Alloy component labels should be changed if you need to reference them from elsewhere.
 
 ### Prometheus

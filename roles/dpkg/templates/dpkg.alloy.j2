@@ -1,0 +1,81 @@
+loki.source.file "{{ loki_source_file_dpkg_label }}" {
+    targets = [
+        {__path__ = "{{ dpkg_log_path }}", service_name = "{{ loki_source_file_dpkg_job_name }}", level = "info"},
+    ]
+
+    forward_to = [loki.process.{{ loki_process_dpkg_label }}.receiver]
+}
+
+// See: https://manpages.debian.org/testing/dpkg/dpkg.1.en.html
+loki.process "{{ loki_process_dpkg_label }}" {
+    forward_to = [loki.write.{{ loki_write_label }}.receiver]
+
+
+    // Separate timestamp from content
+    stage.regex {
+        expression = "^(?P<time>\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}) (?P<content>.*)$"
+    }
+
+    // The action logs don't have an easy way to capture the type of action, so instead we treat it as a default. Others will overwrite.
+    stage.static_labels { 
+        values = {
+            dpkg_log_type = "action",
+        }
+    }
+
+    // For startup logs
+    stage.regex {
+        source = "content"
+        expression = "(?P<type>startup) (?P<dpkg_startup_type>archives|packages) (?P<dpkg_action>unpack|install|configure|triggers-only|remove|purge)"
+    }
+
+    // For actions logs
+    stage.regex {
+        source = "content"
+        expression = "(?P<dpkg_action>install|upgrade|configure|trigproc|disappear|remove|purge) (?P<dpkg_target>\\S+):(?P<dpkg_target_arch>\\S+) (?P<dpkg_installed_version>\\S+) (?P<dpkg_available_version>\\S+)"
+    }
+
+    // For status logs
+    stage.regex {
+        source = "content"
+        expression = "`(?P<type>status) (?P<dpkg_package_status>\\S+) (?P<dpkg_target>\\S+):(?P<dpkg_target_arch>\\S+) (?P<dpkg_installed_version>\\S+)"
+    }
+
+    // For conffile logs
+    stage.regex {
+        source = "content"
+        expression = "(?P<type>conffile) (?P<dpkg_target>\\S+) (?P<dpkg_action>install|keep)"
+    }
+
+    stage.timestamp {
+        source = "time"
+        format = "2006-01-02 15:04:05" // dpkg timestamp format
+    }
+
+    stage.drop {
+        older_than = "168h" // 7 days
+    }
+
+    stage.output {
+        source = "content"
+    }
+
+    stage.labels {
+        values = {
+            dpkg_log_type = "type",
+            dpkg_startup_type = "dpkg_startup_type",
+            dpkg_startup_action = "dpkg_startup_action",
+            dpkg_pkg_status = "dpkg_package_status",
+            dpkg_action = "dpkg_action",
+        }
+    }
+
+    stage.structured_metadata {
+        values = {
+            hostname = constants.hostname,
+            dpkg_target = "dpkg_target",
+            dpkg_installed_version = "dpkg_installed_version",
+            dpkg_available_version = "dpkg_available_version",
+        }
+    }
+}
