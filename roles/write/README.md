@@ -1,4 +1,4 @@
-# `homelab_alloy.write`
+# `homelab-alloy.write`
 
 ## Description
 
