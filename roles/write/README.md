@@ -13,7 +13,7 @@ The only required values are:
 
 Each list contains dictionaries, and each entry must have the `url` key set. For Grafana Alloy, the `url` field is a required value, but the rest of the fields are optional; that said, you can include them here if you wish to change the way the endpoint is configured.
 
-> [!warning] Current limitations
+> [!WARNING] Current limitations
 > Note that these values are passed as is using Jinja, so they can sometimes be misinterpreted as strings rather than objects. Alloy is picky when it comes to this.
 
 ### External Labels
@@ -45,6 +45,7 @@ You can optionally set the `prometheus_external_labels` or `loki_external_labels
 ```
 
 ## All Variables
+
 The following variables can configure what the role does. Of note, the Grafana Alloy component labels should be changed if you need to reference them from elsewhere.
 
 ### Prometheus
