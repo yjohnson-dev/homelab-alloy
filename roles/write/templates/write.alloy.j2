@@ -1,28 +1,30 @@
 {% if enable_prometheus %}
 prometheus.remote_write "{{ prometheus_remote_write_label }}" {
-    {% if prometheus_external_labels is defined and prometheus_external_labels %}
+    {% if prometheus_external_labels is defined and prometheus_external_labels -%}
     external_labels = {
-    {% for key, value in prometheus_external_labels.items() %}
-    {{ key }} = "{{ value }}",
-    {% endfor %}
-}
+{% for item in prometheus_external_labels %}{% for key, value in item.items() %}
+        {{ key }} = "{{ value }}",
+{% endfor %}{% endfor %}
+    }
 {% endif -%}
-    {% for endpoint in prometheus_endpoints -%}
+{% for endpoint in prometheus_endpoints %}
     endpoint {
     {% for key, value in endpoint.items() if ((value is not none) ) %}
     {{ key }} = "{{ value }}"
     {% endfor %}
-}{% endfor +%}
+}
+{% endfor +%}
 }
 {% endif %}
 {% if enable_loki %}
 loki.write "{{ loki_write_label }}" {
-{% if loki_external_labels is defined and loki_external_labels %}
+    {% if loki_external_labels is defined and loki_external_labels -%}
     external_labels = {
-    {% for key, value in loki_external_labels.items() %}
-    {{ key }} = "{{ value }}",
-    {% endfor %}
-}{% endif %}
+{% for item in loki_external_labels %}{% for key, value in item.items() %}
+        {{ key }} = "{{ value }}",
+{% endfor %}{% endfor %}
+    }
+{% endif -%}
 {% for endpoint in loki_endpoints %}
     endpoint {
         url = "{{ endpoint.url }}"
@@ -62,6 +64,7 @@ loki.write "{{ loki_write_label }}" {
         retry_on_http_429 = "{{ endpoint.retry_on_http_429 }}"{% endif +%}
         {%- if endpoint.tenant_id is defined +%}
         tenant_id = "{{ endpoint.tenant_id }}"{% endif +%}
-    }{% endfor +%}
+    }
+{% endfor +%}
 }{% endif %}
 
