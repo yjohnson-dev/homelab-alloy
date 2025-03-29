@@ -13,7 +13,7 @@ The only required values are:
 
 Each list contains dictionaries, and each entry must have the `url` key set. For Grafana Alloy, the `url` field is a required value, but the rest of the fields are optional; that said, you can include them here if you wish to change the way the endpoint is configured.
 
-> [!WARNING] Current limitations
+> [!WARNING]
 > Note that these values are passed as is using Jinja, so they can sometimes be misinterpreted as strings rather than objects. Alloy is picky when it comes to this.
 
 ### External Labels
