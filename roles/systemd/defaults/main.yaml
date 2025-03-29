@@ -1,0 +1,3 @@
+loki_source_journal_label: journal
+loki_relabel_journal_label: journal_relabel
+loki_process_journal_label: journal_process

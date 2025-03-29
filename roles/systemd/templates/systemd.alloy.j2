@@ -1,0 +1,22 @@
+loki.relabel "{{ loki_relabel_journal_label }}" {
+    forward_to = []
+
+    rule {
+        source_labels = ["__journal__systemd_unit"]
+        target_label  = "systemd_unit"
+    }
+    rule {
+        source_labels = ["__journal_priority_keyword"]
+        target_label  = "level"
+    }
+    rule {
+        source_labels = ["__journal__hostname"]
+        target_label  = "hostname"
+    }
+}
+
+loki.source.journal "{{ loki_source_journal_label }}"  {
+    forward_to = [loki.write.{{ loki_write_label }}.receiver]
+    relabel_rules = loki.relabel.{{ loki_relabel_journal_label }}.rules
+    labels        = {component = "loki.source.journal"}
+}

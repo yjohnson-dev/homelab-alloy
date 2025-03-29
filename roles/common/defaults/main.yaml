@@ -4,7 +4,7 @@ alloy_systemd_name: alloy.service
 alloy_user: 'alloy'
 alloy_group: 'alloy'
 
-config_permissions: '0740'
+config_permissions: '0600'
 
 enable_loki: true
 enable_prometheus: true
