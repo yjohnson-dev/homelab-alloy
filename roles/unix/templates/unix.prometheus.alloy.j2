@@ -1,8 +1,17 @@
 prometheus.exporter.unix "{{ prometheus_exporter_unix_label }}" {
-
+{% if prometheus_exporter_unix_args is defined and prometheus_exporter_unix_args -%}
+{% for item in prometheus_exporter_unix_args %}{% for key, value in item.items() %}
+    {{ key }} = "{{ value }}"
+{% endfor %}{% endfor %}
+{% endif %}
 }
 
 prometheus.scrape "{{ prometheus_scrape_unix_label }}" {
     targets = prometheus.exporter.unix.{{ prometheus_exporter_unix_label }}.targets
     forward_to = [prometheus.remote_write.{{ prometheus_remote_write_label }}.receiver]
+{% if prometheus_scrape_unix_args is defined and prometheus_scrape_unix_args -%}
+{% for item in prometheus_scrape_unix_args %}{% for key, value in item.items() %}
+    {{ key }} = "{{ value }}"
+{% endfor %}{% endfor %}
+{% endif %}
 }
