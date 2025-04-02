@@ -1,0 +1,16 @@
+prometheus.remote_write "{{ prometheus_remote_write_label }}" {
+    external_labels = {
+{% if prometheus_external_labels is defined and prometheus_external_labels -%}
+{% for item in prometheus_external_labels %}{% for key, value in item.items() %}
+        {{ key }} = "{{ value }}",
+{% endfor %}{% endfor %}
+{% endif %}
+    }
+{% for endpoint in prometheus_endpoints %}
+    endpoint {
+    {% for key, value in endpoint.items() if ((value is not none) ) %}
+    {{ key }} = "{{ value }}"
+    {% endfor %}
+}
+{% endfor +%}
+}
