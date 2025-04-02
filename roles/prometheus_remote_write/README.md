@@ -30,22 +30,22 @@ This playbook will create multiple endpoints within the same `prometheus.remote_
     - role: yjohnsondev.homelab_alloy.prometheus_remote_write
       vars:
         prometheus_endpoints:
-          - url: https://telemetry.example.com/api/v1/write
+          - url: "https://telemetry.example.com/api/v1/write"
             name: "Main Telemetry Server"
           - url: "https://offsite-telemetry.example.com/api/v1/write"
             name: "Secondary Telemetry Server"
         prometheus_external_labels:   # optional
-          - environment: production
+          - environment: "production"
           - address: "{{ ansible_default_ipv4.address }}"
 
     # If you want multiple, different, endpoints.
     - role: yjohnsondev.homelab_alloy.prometheus_remote_write
       vars:
         prometheus_endpoints:
-          - url: http://test-telemetry.example.com/api/v1/write
+          - url: "http://test-telemetry.example.com/api/v1/write"
             name: "Testing Telemetry Server"
         prometheus_external_labels:   # optional
-          - environment: testing
+          - environment: "testing"
         
         # The following are required if you want to have multiple independent enpoint targets.
         config_name: "remote_write.test"  # Output is "remote_write.test.prometheus.alloy"
