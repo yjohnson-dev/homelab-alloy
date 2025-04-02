@@ -1,8 +1,8 @@
 ---
 - name: Generate configuration file from template
   ansible.builtin.template:
-    src: "{{ role_name }}.alloy.j2"
-    dest: "{{ alloy_dir }}/{{ config_name | default(role_name) }}.alloy"
+    src: "{{ role_name }}.loki.alloy.j2"
+    dest: "{{ alloy_dir }}/{{ config_name | default(role_name) }}.loki.alloy"
     mode: "{{ config_permissions }}"
     owner: "{{ alloy_user }}"
     group: "{{ alloy_group }}"

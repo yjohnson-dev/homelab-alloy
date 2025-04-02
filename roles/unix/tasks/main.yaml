@@ -1,14 +1,10 @@
 ---
 - name: Generate configuration file from template
   ansible.builtin.template:
-    src: "{{ role_name }}.{{ item.target }}.alloy.j2"
-    dest: "{{ alloy_dir }}/{{ config_name | default(role_name) }}.{{ item.target }}.alloy"
+    src: "{{ role_name }}.prometheus.alloy.j2"
+    dest: "{{ alloy_dir }}/{{ config_name | default(role_name) }}.prometheus.alloy"
     mode: "{{ config_permissions }}"
     owner: "{{ alloy_user }}"
     group: "{{ alloy_group }}"
-  loop:
-    # - { target: "loki", condition: "{{ enable_loki }}"}
-    - { target: "prometheus", condition: "{{ enable_prometheus }}"}
-  when: item.condition
   notify:
     - Verify Grafana Alloy
