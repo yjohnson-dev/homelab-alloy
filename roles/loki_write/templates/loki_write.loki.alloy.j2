@@ -1,22 +1,3 @@
-{% if enable_prometheus %}
-prometheus.remote_write "{{ prometheus_remote_write_label }}" {
-    external_labels = {
-{% if prometheus_external_labels is defined and prometheus_external_labels -%}
-{% for item in prometheus_external_labels %}{% for key, value in item.items() %}
-        {{ key }} = "{{ value }}",
-{% endfor %}{% endfor %}
-{% endif %}
-    }
-{% for endpoint in prometheus_endpoints %}
-    endpoint {
-    {% for key, value in endpoint.items() if ((value is not none) ) %}
-    {{ key }} = "{{ value }}"
-    {% endfor %}
-}
-{% endfor +%}
-}
-{% endif %}
-{% if enable_loki %}
 loki.write "{{ loki_write_label }}" {
     external_labels = {
 {% if loki_external_labels is defined and loki_external_labels -%}
@@ -66,5 +47,5 @@ loki.write "{{ loki_write_label }}" {
         tenant_id = "{{ endpoint.tenant_id }}"{% endif +%}
     }
 {% endfor +%}
-}{% endif %}
+}
 

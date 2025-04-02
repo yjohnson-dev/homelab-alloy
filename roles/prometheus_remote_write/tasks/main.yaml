@@ -1,0 +1,10 @@
+---
+- name: Generate configuration file from template
+  ansible.builtin.template:
+    src: "{{ role_name }}.prometheus.alloy.j2"
+    dest: "{{ alloy_dir }}/{{ config_name | default('remote_write') }}.prometheus.alloy"
+    mode: "{{ config_permissions }}"
+    owner: "{{ alloy_user }}"
+    group: "{{ alloy_group }}"
+  notify:
+    - Verify Grafana Alloy
