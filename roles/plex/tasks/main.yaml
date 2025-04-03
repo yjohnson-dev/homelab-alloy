@@ -1,0 +1,18 @@
+- name: Generate local file components
+  ansible.builtin.set_fact:
+    loki_source_file_components: '{{ lookup("template", "__loki_source_file.j2") }}'
+  vars:
+    __loki_source_file_comment_header: "Plex Media Server Logs"
+    __loki_source_file_label: "plex"
+    __loki_source_file_path_list: "{{ [plex_logs_dir] | product(plex_logs) | map('join', '/') | product(['.log']) | map('join') | list }}"
+    __loki_source_file_receiver_list:
+      - "loki.process.{{ plex_loki_process_label }}.receiver"
+
+- name: Generate configuration file from template
+  ansible.builtin.template:
+    src: plex.loki.alloy.j2
+    dest: /tmp/test
+    mode: ''
+
+  # ansible.builtin.debug:
+  #   msg: "{{ lookup('ansible.builtin.template', '__local_file.j2') }}"

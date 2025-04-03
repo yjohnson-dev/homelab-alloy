@@ -1,0 +1,10 @@
+{# https://grafana.com/docs/alloy/latest/reference/components/local/local.file/ #}
+// {{ __local_file_comment_header }}
+local.file "{{ __local_file_label }}" {
+  filename = "{{ __local_file_path }}"
+  {% if __local_file_detector is defined and __local_file_detector %}detector = "{{ __local_file_detector }}"{% endif %}
+
+  {% if __local_file_poll_frequency is defined and __local_file_poll_frequency %}poll_frequency = "{{ __local_file_poll_frequency }}"{% endif %}
+
+  {% if __local_file_is_secret is defined %}is_secret = {{ __local_file_is_secret | lower }}{% endif %}
+}

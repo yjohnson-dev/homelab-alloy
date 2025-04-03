@@ -1,0 +1,29 @@
+// {{ __loki_source_file_comment_header }}
+loki.source.file "{{ __loki_source_file_label }}" {
+    targets = [
+        {% for path in __loki_source_file_path_list %}{__path__ = "{{ path }}",{% if __loki_source_file_target_labels_dict is defined %}{% for item in __loki_source_file_target_labels_dict %}{% for key,value in item.items() %} {{key}} = "{{value}}",{% endfor %}{% endfor %}{% endif +%}},
+        {% endfor +%}
+    ]
+    forward_to = [
+        {% for receiver in __loki_source_file_receiver_list %}{{ receiver }},
+        {% endfor +%}
+    ]
+
+    {% if __loki_source_file_encoding is defined and __loki_source_file_encoding %}encoding = "{{ __loki_source_file_encoding }}"{% endif %}
+
+    {% if __loki_source_file_legacy_positions_file is defined and __loki_source_file_legacy_positions_file %}legacy_positions_file = "{{ __loki_source_file_legacy_positions_file }}"{% endif %}
+    
+    {% if __loki_source_file_tail_from_end is defined and __loki_source_file_tail_from_end %}tail_from_end = {{ __loki_source_file_legacy_positions_file | lower }}{% endif %}
+
+    {% if __loki_source_file_decompression is defined and __loki_source_file_decompression -%}decompression {
+        enabled = {{ __loki_source_file_decompression_enabled | lower }}
+        format = "{{ __loki_source_file_decompression_format }}"
+        {% if __loki_source_file_decompression_initial_delay is defined %}initial_delay = "{{ __loki_source_file_decompression_initial_delay }}"{% endif %}
+    }{%- endif %}
+
+    {% if __loki_source_file_file_watch is defined and __loki_source_file_file_watch -%}file_watch {
+        {% if __loki_source_file_file_watch_max_poll_frequency is defined %}max_poll_frequency = "{{__loki_source_file_file_watch_max_poll_frequency}}"{% endif +%}
+        {% if __loki_source_file_file_watch_min_poll_frequency is defined %}min_poll_frequency = "{{__loki_source_file_file_watch_min_poll_frequency}}"{% endif +%}
+    }{% endif %}
+
+}
