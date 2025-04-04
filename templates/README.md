@@ -43,4 +43,3 @@ __loki_source_file_file_watch:                    # Boolean, required if other r
 __loki_source_file_file_watch_max_poll_frequency: # String
 __loki_source_file_file_watch_min_poll_frequency: # String
 ```
-

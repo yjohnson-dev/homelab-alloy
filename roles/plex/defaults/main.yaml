@@ -1,4 +1,6 @@
-plex_logs:
+plex_loki_source_file_label: "plex_source"
+plex_loki_process_label: "plex_process"
+plex_loki_logs:
   - Plex Media Server
   - Plex Tuner Service
   - Plex Media Scanner Chapter Thumbnails
@@ -7,7 +9,7 @@ plex_logs:
   - Plex Media Scanner Matcher
   - Plex Media Scanner Voice Activity
 
-plex_logs_dir: /var/lib/plexmediaserver/Library/Application Support/Plex Media Server/Logs
+plex_loki_logs_dir: /var/lib/plexmediaserver/Library/Application Support/Plex Media Server/Logs
 
 # __loki_source_file_comment_header: Plex Logs
 # __loki_source_file_label: plex_logs_files
