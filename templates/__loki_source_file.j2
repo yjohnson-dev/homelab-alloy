@@ -1,7 +1,9 @@
+//
 // {{ __loki_source_file_comment_header }}
+//
 loki.source.file "{{ __loki_source_file_label }}" {
     targets = [
-        {% for path in __loki_source_file_path_list %}{__path__ = "{{ path }}",{% if __loki_source_file_target_labels_dict is defined %}{% for item in __loki_source_file_target_labels_dict %}{% for key,value in item.items() %} {{key}} = "{{value}}",{% endfor %}{% endfor %}{% endif +%}},
+        {% for path in __loki_source_file_path_list %}{__path__ = "{{ path }}", source = "{{ path | basename }}", {% if __loki_source_file_target_labels_dict %}{% for item in __loki_source_file_target_labels_dict|dict2items %} {{item.key}} = "{{item.value}}",{% endfor %}{% endif +%}},
         {% endfor +%}
     ]
     forward_to = [

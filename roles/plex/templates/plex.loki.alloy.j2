@@ -38,8 +38,4 @@ loki.process "{{ plex_loki_process_label }}" {
     stage.output {
         source = "content"
     }
-
-    stage.drop {
-        older_than = "168h" // 7 days
-    }
 }
