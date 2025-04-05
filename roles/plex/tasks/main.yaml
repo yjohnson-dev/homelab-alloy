@@ -1,8 +1,8 @@
 - name: Generate loki.file components
   # debug:
   #   msg: "{{__loki_source_file_target_labels_dict}}"
-  ansible.builtin.set_fact:
-    loki_source_file_components: '{{ lookup("template", "__loki_source_file.j2") }}'
+  ansible.builtin.import_role:
+    name: __loki_source_file
   vars:
     __loki_source_file_comment_header: "Plex Media Server Logs"
     __loki_source_file_label: "{{ plex_loki_source_file_label }}"

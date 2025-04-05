@@ -1,0 +1,3 @@
+- name: Generate loki.source.file component
+  ansible.builtin.set_fact:
+    loki_source_file: '{{ lookup("template", "__loki_source_file.j2") }}'
