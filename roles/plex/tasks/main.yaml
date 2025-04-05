@@ -10,7 +10,7 @@
       job: loki.source.file
       component: loki.source.file.{{ __loki_source_file_label }}
       app: "{{ plex_loki_appname | default('plexmediaserver') }}"
-      instance: '{{ plex_loki_instance | default(ansible_hostname) }}'
+      instance: '{{ plex_loki_instance | default(inventory_hostname) }}'
       environment: '{{ plex_loki_environment | default("default") }}'
       network: '{{ plex_loki_network | default("default") }}'
     __loki_source_file_path_list: "{{ [plex_loki_logs_dir] | product(plex_loki_logs) | map('join', '/') | product(['.log']) | map('join') | list }}"
