@@ -1,0 +1,41 @@
+// MANAGED BY ANSIBLE
+{{ loki_source_file_components }}
+
+loki.process "{{ plex_loki_process_label }}" {
+    forward_to = [
+        {% for receiver in plex_loki_receiver_list %}{{ receiver }},
+        {% endfor +%}
+    ]
+
+    // Separate timestamp from content
+    stage.regex {
+        expression = "^(?P<time>\\w{3} \\d{2}, \\d{4} \\d{2}:\\d{2}:\\d{2}\\.\\d{3}) (?P<content>.*)$"
+    }
+
+    stage.regex {
+        source = "content"
+        expression = "\\[(?P<thread>\\d+)\\] (?P<level>\\w+) - (?P<msg>.*)$"
+    }
+
+    stage.timestamp {
+        source = "time"
+        format = "Jan 02, 2006 15:04:05.000" // Plex timestamp format
+    }
+
+    stage.structured_metadata {
+        values = {
+            msg = "msg",
+            thread_id = "thread",
+        }
+    }
+
+    stage.labels {
+        values = {
+            level = "level",
+        }
+    }
+
+    stage.output {
+        source = "content"
+    }
+}

@@ -1,0 +1,28 @@
+- name: Generate loki.file components
+  # debug:
+  #   msg: "{{__loki_source_file_target_labels_dict}}"
+  ansible.builtin.set_fact:
+    loki_source_file_components: '{{ lookup("template", "__loki_source_file.j2") }}'
+  vars:
+    __loki_source_file_comment_header: "Plex Media Server Logs"
+    __loki_source_file_label: "{{ plex_loki_source_file_label }}"
+    __loki_source_file_target_labels_dict:
+      job: loki.source.file
+      component: loki.source.file.{{ __loki_source_file_label }}
+      app: "{{ plex_loki_appname | default('plexmediaserver') }}"
+      instance: '{{ plex_loki_instance | default(ansible_hostname) }}'
+      environment: '{{ plex_loki_environment | default("default") }}'
+      network: '{{ plex_loki_network | default("default") }}'
+    __loki_source_file_path_list: "{{ [plex_loki_logs_dir] | product(plex_loki_logs) | map('join', '/') | product(['.log']) | map('join') | list }}"
+    __loki_source_file_receiver_list:
+      - "loki.process.{{ plex_loki_process_label }}.receiver"
+
+- name: Generate configuration file from template
+  ansible.builtin.template:
+    src: "{{ role_name }}.loki.alloy.j2"
+    dest: "{{ alloy_dir }}/{{ config_name | default('plex') }}.loki.alloy"
+    mode: "{{ config_permissions }}"
+    owner: "{{ alloy_user }}"
+    group: "{{ alloy_group }}"
+  notify:
+    - Verify Grafana Alloy

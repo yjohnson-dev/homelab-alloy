@@ -1,0 +1,28 @@
+plex_loki_source_file_label: "plex_source"
+plex_loki_process_label: "plex_process"
+plex_loki_logs:
+  - Plex Media Server
+  - Plex Tuner Service
+  - Plex Media Scanner Chapter Thumbnails
+  - Plex Media Scanner Credits
+  - Plex Media Scanner Deep Analysis
+  - Plex Media Scanner Matcher
+  - Plex Media Scanner Voice Activity
+
+plex_loki_logs_dir: /var/lib/plexmediaserver/Library/Application Support/Plex Media Server/Logs
+
+# __loki_source_file_comment_header: Plex Logs
+# __loki_source_file_label: plex_logs_files
+# __loki_source_file_path_list:
+# __loki_source_file_target_labels_dict:
+# __loki_source_file_receiver_list:
+# __loki_source_file_encoding:
+# __loki_source_file_legacy_positions_file:
+# __loki_source_file_tail_from_end:
+# __loki_source_file_decompression:
+# __loki_source_file_decompression_enabled:
+# __loki_source_file_decompression_format:
+# __loki_source_file_decompression_initial_delay:
+__loki_source_file_file_watch: true
+# __loki_source_file_file_watch_max_poll_frequency:
+__loki_source_file_file_watch_min_poll_frequency: "1m"
