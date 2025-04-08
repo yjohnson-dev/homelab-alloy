@@ -24,5 +24,5 @@ plex_loki_logs_dir: /var/lib/plexmediaserver/Library/Application Support/Plex Me
 # __loki_source_file_decompression_format:
 # __loki_source_file_decompression_initial_delay:
 __loki_source_file_file_watch: true
-# __loki_source_file_file_watch_max_poll_frequency:
-__loki_source_file_file_watch_min_poll_frequency: "1m"
+__loki_source_file_file_watch_min_poll_frequency: 250ms
+__loki_source_file_file_watch_max_poll_frequency: 1m
